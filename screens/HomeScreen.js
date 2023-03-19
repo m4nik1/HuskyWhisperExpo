@@ -62,7 +62,7 @@ function HomeScreen() {
         console.log("loading the telegram :)")
         const soundObj = new Audio.Sound()
         
-        await soundObj.loadAsync('file:///var/mobile/Containers/Data/Application/685B54B4-5B51-4218-A731-02FD88FC780A/Library/Caches/ExponentExperienceData/%2540m4nik1%252FHuskyWhisper/AV/recording-066DDE03-7BC9-4D91-9732-A615D4361B42.m4a');
+        await soundObj.loadAsync({ uri: recentURI });
 
         setSound(soundObj)
 
