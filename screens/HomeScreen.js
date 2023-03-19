@@ -81,7 +81,7 @@ function HomeScreen() {
     return (
         <View style={styles.container}>
             <View>
-                <Pressable style={styles.playBtn} onPress={ () => playRecording()}>
+                <Pressable style={styles.playBtn} onPress={ loadSound ? stopRecording : playRecording}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
                 </Pressable>
             </View>
