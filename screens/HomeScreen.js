@@ -91,6 +91,12 @@ function HomeScreen() {
                     <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
                 </Pressable>
             </View>
+
+            <View style={{ padding: 10 }}>
+                <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
+                    <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
