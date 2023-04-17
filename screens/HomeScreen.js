@@ -78,6 +78,19 @@ function HomeScreen() {
         setSound(undefined);
     }
 
+    async function sendRecording() {
+        const response  = await fetch("127.0.0.1:8000/" {
+            method: "POST",
+            mode: "no-cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type" : "multipart/form-data",
+            }
+        });
+
+        console.log(response.json());
+    }
+
     return (
         <View style={styles.container}>
             <View>
@@ -93,7 +106,7 @@ function HomeScreen() {
             </View>
 
             <View style={{ padding: 10 }}>
-                <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
+                <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
                 </Pressable>
             </View>
