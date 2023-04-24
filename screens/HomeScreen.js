@@ -2,6 +2,8 @@ import React, { useState } from "react";
 
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import { Audio } from 'expo-av'
+import * as FileSystem from 'expo-file-system';
+
 
 function sendRequest() {
     fetch('192.168.1.44:8000/', {
@@ -18,6 +20,7 @@ function HomeScreen() {
     const [haveRecordings, setRecordings] = useState(0);
     const [recentURI, setURI] = useState('');
     const [loadSound, setSound] = useState();
+
 
     async function record() {
         console.log("NOW RECORDING")
@@ -75,26 +78,35 @@ function HomeScreen() {
         console.log("Stopping the playback!")
 
         loadSound.unloadAsync();
-        setSound(undefined);
+        setSound(null);
     }
 
     async function sendRecording() {
-        const response  = await fetch("127.0.0.1:8000/" {
-            method: "POST",
-            mode: "no-cors",
-            cache: "no-cache",
-            headers: {
-                "Content-type" : "multipart/form-data",
-            }
-        });
+        // const response  = await fetch("127.0.0.1:8000/", {
+        //     method: "POST",
+        //     mode: "no-cors",
+        //     cache: "no-cache",
+        //     headers: {
+        //         "Content-type" : "multipart/form-data",
+        //     }
+        // });
 
-        console.log(response.json());
+        // console.log(response.json());
+    }
+
+    async function savedRecordings() {
+        console.log("Printing out saved Recordings now")
+
+        list_cache = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+        console.log(list_cache)
+
+        
     }
 
     return (
         <View style={styles.container}>
             <View>
-                <Pressable style={styles.playBtn} onPress={ loadSound ? stopRecording : playRecording}>
+                <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
                 </Pressable>
             </View>
@@ -105,14 +117,15 @@ function HomeScreen() {
                 </Pressable>
             </View>
 
-            <View style={{ padding: 10 }}>
-                <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
+            <View style={{ padding: 10, marginBottom: 1000 }}>
+                <Pressable style={styles.recordBtn} onPress={() => savedRecordings()}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
                 </Pressable>
             </View>
         </View>
     )
 }
+
 
 const styles = StyleSheet.create({
     container: {
