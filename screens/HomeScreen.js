@@ -82,16 +82,16 @@ function HomeScreen() {
     }
 
     async function sendRecording() {
-        // const response  = await fetch("127.0.0.1:8000/", {
-        //     method: "POST",
-        //     mode: "no-cors",
-        //     cache: "no-cache",
-        //     headers: {
-        //         "Content-type" : "multipart/form-data",
-        //     }
-        // });
+        const response  = await fetch("10.194.240.76:8000/", {
+            method: "GET",
+            // mode: "no-cors",
+            // cache: "no-cache",
+            headers: {
+                "Content-type" : "application/json",
+            }
+        });
 
-        // console.log(response.json());
+        console.log(response.json());
     }
 
     async function savedRecordings() {
@@ -99,8 +99,6 @@ function HomeScreen() {
 
         list_cache = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
         console.log(list_cache)
-
-        
     }
 
     return (
@@ -118,7 +116,7 @@ function HomeScreen() {
             </View>
 
             <View style={{ padding: 10, marginBottom: 1000 }}>
-                <Pressable style={styles.recordBtn} onPress={() => savedRecordings()}>
+                <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
                 </Pressable>
             </View>
