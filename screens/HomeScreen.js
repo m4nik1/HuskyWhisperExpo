@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
+import axios from "axios";
 
 
 function sendRequest() {
@@ -82,23 +83,41 @@ function HomeScreen() {
     }
 
     async function sendRecording() {
-        const response  = await fetch("10.194.240.76:8000/", {
-            method: "GET",
-            // mode: "no-cors",
-            // cache: "no-cache",
-            headers: {
-                "Content-type" : "application/json",
-            }
-        });
+        file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+        file1 = FileSystem.cacheDirectory+"/AV/"+file[0]
 
-        console.log(response.json());
+        file_upload = new FormData()
+
+        file_upload.append('file', {
+            uri: file1,
+            name: 'test.mp4'
+        })
+
+        await axios({
+            method: 'POST',
+            url: "http://127.0.0.1:/uploadLectureRecording/",
+            data: {
+                file: file_upload
+            },
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+
+        }).then(function(response) {
+            console.log(response.json)
+        }).catch(function(err){
+            console.log(err)
+        }) 
+
+
+        // console.log(response.json());
     }
 
     async function savedRecordings() {
         console.log("Printing out saved Recordings now")
 
         list_cache = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        console.log(list_cache)
+        console.log(list_cache[0])
     }
 
     return (
