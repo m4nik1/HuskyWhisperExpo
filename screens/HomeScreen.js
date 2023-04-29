@@ -6,6 +6,7 @@ import * as FileSystem from 'expo-file-system';
 import axios from "axios";
 
 
+
 function sendRequest() {
     fetch('192.168.1.44:8000/', {
         method: 'POST',
@@ -90,25 +91,29 @@ function HomeScreen() {
 
         file_upload.append('file', {
             uri: file1,
-            name: 'test.mp4'
+            name: 'file',
+            type: 'application/octet-stream'
         })
 
-        await axios({
-            method: 'POST',
-            url: "http://127.0.0.1:/uploadLectureRecording/",
-            data: {
-                file: file_upload
-            },
+        const options = {
             headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+              'Content-Type': 'multipart/form-data',
+            },
+        };
+        
 
-        }).then(function(response) {
-            console.log(response.json)
-        }).catch(function(err){
-            console.log(err)
-        }) 
+        try {
+            const response = await axios.post("http://127.0.0.1:8000/uploadLectureRecording/", file_upload, options)
+            console.log(response.data)
+            return response.data
+        }
 
+        catch(err) {
+            console.error("Error uploading", err)
+            throw error
+        }
+        
+        
 
         // console.log(response.json());
     }
@@ -174,3 +179,5 @@ const styles = StyleSheet.create({
 })
 
 export default HomeScreen;
+
+
