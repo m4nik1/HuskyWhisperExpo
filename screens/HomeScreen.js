@@ -85,14 +85,14 @@ function HomeScreen() {
 
     async function sendRecording() {
         file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        file1 = FileSystem.cacheDirectory+"/AV/"+file[0]
+        file1 = FileSystem.cacheDirectory+"/AV/"+file[1]
 
         file_upload = new FormData()
 
         file_upload.append('file', {
             uri: file1,
-            name: 'file',
-            type: 'application/octet-stream'
+            name: file[1],
+            type: 'audio/mpeg'
         })
 
         const options = {
