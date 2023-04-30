@@ -83,11 +83,14 @@ function HomeScreen() {
         setSound(null);
     }
 
+
+
     async function sendRecording() {
         file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
         file1 = FileSystem.cacheDirectory+"/AV/"+file[1]
 
         file_upload = new FormData()
+        
 
         file_upload.append('file', {
             uri: file1,
@@ -103,7 +106,17 @@ function HomeScreen() {
         
 
         try {
-            const response = await axios.post("http://127.0.0.1:8000/uploadLectureRecording/", file_upload, options)
+            // const response = await axios.post("http://127.0.0.1:8000/uploadLectureRecording/", file_upload, options)
+            
+            const response = await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/uploadLectureRecording/',
+                data: file_upload,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
             console.log(response.data)
             return response.data
         }
@@ -119,10 +132,16 @@ function HomeScreen() {
     }
 
     async function savedRecordings() {
-        console.log("Printing out saved Recordings now")
+        console.log(file1)
 
-        list_cache = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        console.log(list_cache[0])
+        file_upload = new FormData()
+        
+
+        file_upload.append('file', {
+            uri: file1,
+            name: file[1],
+            type: 'audio/mpeg'
+        })
     }
 
     return (
