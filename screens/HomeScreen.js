@@ -86,9 +86,11 @@ function HomeScreen() {
 
 
     async function sendRecording() {
-        file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        file1 = FileSystem.cacheDirectory+"/AV/"+file[1]
+        const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+        const file1 = FileSystem.cacheDirectory+"/AV/"+file[1]
 
+
+        const blob_upload = new Blob()
         file_upload = new FormData()
         
 
@@ -98,12 +100,13 @@ function HomeScreen() {
             type: 'audio/mpeg'
         })
 
-        const options = {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-        };
+        // const options = {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data',
+        //     },
+        // };
         
+
 
         try {
             // const response = await axios.post("http://127.0.0.1:8000/uploadLectureRecording/", file_upload, options)
@@ -125,9 +128,6 @@ function HomeScreen() {
             console.error("Error uploading", err)
             throw error
         }
-        
-        
-
         // console.log(response.json());
     }
 
@@ -166,6 +166,7 @@ function HomeScreen() {
         </View>
     )
 }
+
 
 
 const styles = StyleSheet.create({
