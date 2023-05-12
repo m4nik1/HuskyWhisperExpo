@@ -1,20 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { View, Text, Pressable, StyleSheet } from "react-native"
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
-
-
-
-function sendRequest() {
-    fetch('192.168.1.44:8000/', {
-        method: 'POST',
-        body: 'Hello Person!'
-    })
-}
-
-
 
 function HomeScreen() {
 
@@ -22,6 +11,7 @@ function HomeScreen() {
     const [haveRecordings, setRecordings] = useState(0);
     const [recentURI, setURI] = useState('');
     const [loadSound, setSound] = useState();
+    const [audioFiles, setAudioFiles] = useState('')
 
 
     async function record() {
@@ -87,14 +77,14 @@ function HomeScreen() {
 
     async function sendRecording() {
         const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        const file1 = FileSystem.cacheDirectory+"/AV/"+file[1]
+        const file1 = FileSystem.cacheDirectory+"/AV/"+file[6]
 
         file_upload = new FormData()
         
 
         file_upload.append('file', {
             uri: file1,
-            name: file[1],
+            name: file[6],
             type: 'audio/mpeg'
         })
         
@@ -104,7 +94,7 @@ function HomeScreen() {
             
             const response = await axios({
                 method: 'post',
-                url: 'http://127.0.0.1:8000/uploadLectureRecording/',
+                url: 'http://100.117.52.29:3000/uploadLectureRecording',
                 data: file_upload,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -121,21 +111,37 @@ function HomeScreen() {
         }
     }
 
-    async function savedRecordings() {
-        console.log(file1)
+    // async function savedRecordings() {
+    //     const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
 
-        file_upload = new FormData()
-        
+    //     console.log(file[6])
+    // }
 
-        file_upload.append('file', {
-            uri: file1,
-            name: file[1],
-            type: 'audio/mpeg'
-        })
-    }
+    // async function updateAudioFiles() {
+    //     const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+
+    //     console.log(files)
+    //     setAudioFiles(files)
+
+    //     return files
+    // }
+
+    // useEffect(() => {
+    //     updateAudioFiles()
+    // }, [])
 
     return (
         <View style={styles.container}>
+            {/* <View>
+                <FlatList
+                    data={audioFiles}
+                    renderItem={itemData => (
+                        <View>
+                            <Text>{itemData}</Text>
+                        </View>
+                    )}
+                />
+            </View> */}
             <View>
                 <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
