@@ -4,6 +4,7 @@ import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
+import AudioFile from "../components/AudioFile";
 
 function HomeScreen() {
 
@@ -111,37 +112,56 @@ function HomeScreen() {
         }
     }
 
+    async function printRecordings() {
+        const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+
+        console.log(file)
+    }
+
     // async function savedRecordings() {
     //     const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
 
     //     console.log(file[6])
     // }
 
-    // async function updateAudioFiles() {
-    //     const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+    async function updateAudioFiles() {
+        const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+        const filesObj = []
+        // console.log(files)
 
-    //     console.log(files)
-    //     setAudioFiles(files)
+        for(var i = 0; i < files.length; i++) {
+            var obj = {}
 
-    //     return files
-    // }
+            obj["id"] = i
+            obj["filename"] = files[i]
+            
+            filesObj.push(obj)
 
-    // useEffect(() => {
-    //     updateAudioFiles()
-    // }, [])
+        }
+
+        setAudioFiles(filesObj)
+        console.log(audioFiles)
+
+        // return files
+    }
+
+    useEffect(() => {
+        updateAudioFiles()
+    }, [])
 
     return (
         <View style={styles.container}>
-            {/* <View>
+            <View>
                 <FlatList
+                    keyExtractor={item => item.id}
                     data={audioFiles}
                     renderItem={itemData => (
-                        <View>
-                            <Text>{itemData}</Text>
-                        </View>
+                        <AudioFile 
+                            fileName={ itemData.item.filename }
+                        />
                     )}
                 />
-            </View> */}
+            </View>
             <View>
                 <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
                     <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
