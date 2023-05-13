@@ -3,16 +3,22 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 
 const AudioFile = (props) => {
     return (
-        <View>
-            <Pressable onPress={() => console.log("Accessing...: ", props.fileName)}>
-                <Text>{ props.fileName }</Text>
-            </Pressable>
+        <View style={styles.container}>
+            <View style={styles.card}>
+                <Pressable onPress={() => console.log("Accessing...: ", props.fileName)}>
+                    <Text>{ props.fileName }</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
 
 
 const styles = StyleSheet.create({
+    container: {
+        padding: 5
+    },
+
     card: {
         shadowColor: 'black',
         shadowOffset: {width: 0, height: 2},

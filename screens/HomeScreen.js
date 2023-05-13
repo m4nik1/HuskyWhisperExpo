@@ -133,7 +133,7 @@ function HomeScreen() {
             var obj = {}
 
             obj["id"] = i
-            obj["filename"] = files[i]
+            obj["filename"] = files[i].split(".")[0]
             
             filesObj.push(obj)
 
@@ -151,7 +151,7 @@ function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <View>
+            <View style={styles.recordList}>
                 <FlatList
                     keyExtractor={item => item.id}
                     data={audioFiles}
@@ -162,22 +162,24 @@ function HomeScreen() {
                     )}
                 />
             </View>
-            <View>
-                <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
-                    <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
-                </Pressable>
-            </View>
+            <View style={styles.buttonContainer}>
+                <View>
+                    <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
+                        <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
+                    </Pressable>
+                </View>
 
-            <View style={{ padding: 10 }}>
-                <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
-                    <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
-                </Pressable>
-            </View>
+                <View style={{ padding: 10 }}>
+                    <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
+                        <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
+                    </Pressable>
+                </View>
 
-            <View style={{ padding: 10, marginBottom: 1000 }}>
-                <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
-                    <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
-                </Pressable>
+                <View style={{ padding: 10, marginBottom: 1000 }}>
+                    <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
+                        <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
+                    </Pressable>
+                </View>
             </View>
         </View>
     )
@@ -190,7 +192,14 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent:'center',
         alignItems: 'center',
-        paddingTop: 700
+        paddingTop: 200
+    },
+    recordList: {
+        marginTop: 20,
+        height: 400
+    },
+    buttonContainer: {
+        paddingTop: 230
     },
     recordBtn: {
         borderRadius: 5,
