@@ -13,6 +13,7 @@ function HomeScreen() {
     const [recentURI, setURI] = useState('');
     const [loadSound, setSound] = useState();
     const [audioFiles, setAudioFiles] = useState('')
+    const [playFile, setFile] = useState('')
 
 
     async function record() {
