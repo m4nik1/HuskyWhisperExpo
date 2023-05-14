@@ -3,14 +3,14 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 
 const AudioFile = (props) => {
 
-    const fileSelect = () => {
-        console.log("Accessing...: ", props.fileName)
-    }
+    // const fileSelect = () => {
+    //     console.log("Accessing...: ", props.fileName)
+    // }
 
     return (
         <View style={styles.container}>
             <View style={styles.card}>
-                <Pressable onPress={() => fileSelect()}>
+                <Pressable onPress={() => props.select(props.fileName)}>
                     <Text>{ props.fileName }</Text>
                 </Pressable>
             </View>

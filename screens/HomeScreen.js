@@ -48,24 +48,33 @@ function HomeScreen() {
         })
 
         const uri = recording.getURI();
-        // console.log('Recording stopped and stored at:', uri)
-        setURI('' + uri)
-        console.log(recentURI)
+
+        // setURI('' + uri)
+        // console.log(recentURI)
 
         setRecording(haveRecordings+1);
+        updateAudioFiles()
     }
 
     async function playRecording() {
-        console.log("loading the telegram :)")
         const soundObj = new Audio.Sound()
         
-        await soundObj.loadAsync({ uri: recentURI });
+        if(recentURI) {
+            console.log("loading the telegram :)")
+            await soundObj.loadAsync({ uri: recentURI });
+            setSound(soundObj)
 
-        setSound(soundObj)
+            await soundObj.playAsync();
 
-        console.log("Playing telegram nao")
+            console.log("Playing telegram nao")
+        }
 
-        await soundObj.playAsync();
+        else {
+            console.log("No recording is selected please select a recording to play one")
+        }
+        
+
+        
     }
 
     async function stopPlaying() {
@@ -73,13 +82,13 @@ function HomeScreen() {
 
         loadSound.unloadAsync();
         setSound(null);
+        setURI('')
     }
-
 
 
     async function sendRecording() {
         const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        const file1 = FileSystem.cacheDirectory+"/AV/"+file[6]
+        const file1 = recentURI
 
         file_upload = new FormData()
         
@@ -113,16 +122,10 @@ function HomeScreen() {
         }
     }
 
-    async function printRecordings() {
-        const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-
-        console.log(file)
-    }
-
-    // async function savedRecordings() {
+    // async function printRecordings() {
     //     const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
 
-    //     console.log(file[6])
+    //     console.log(file)
     // }
 
     async function updateAudioFiles() {
@@ -142,8 +145,13 @@ function HomeScreen() {
 
         setAudioFiles(filesObj)
         console.log(audioFiles)
+    }
 
-        // return files
+    async function fileSelect(file) {
+        const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
+        // console.log("Accessing... ", file)
+        setURI(cache)
+        console.log("Selected ", recentURI)
     }
 
     useEffect(() => {
@@ -159,6 +167,7 @@ function HomeScreen() {
                     renderItem={itemData => (
                         <AudioFile 
                             fileName={ itemData.item.filename }
+                            select={ (f) => fileSelect(f) }
                         />
                     )}
                 />
@@ -197,7 +206,8 @@ const styles = StyleSheet.create({
     },
     recordList: {
         marginTop: 20,
-        height: 400
+        height: 300,
+        width: 350
     },
     buttonContainer: {
         paddingTop: 230
