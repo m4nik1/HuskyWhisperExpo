@@ -11,6 +11,7 @@ function HomeScreen() {
     const [recording, setRecording] = useState();
     const [haveRecordings, setRecordings] = useState(0);
     const [recentURI, setURI] = useState('');
+    const [fileName, setFileName] = useState(''); 
     const [loadSound, setSound] = useState();
     const [audioFiles, setAudioFiles] = useState('')
     const [playFile, setFile] = useState('')
@@ -87,7 +88,7 @@ function HomeScreen() {
 
 
     async function sendRecording() {
-        const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
+        // const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
         const file1 = recentURI
 
         file_upload = new FormData()
@@ -95,22 +96,24 @@ function HomeScreen() {
 
         file_upload.append('file', {
             uri: file1,
-            name: file[6],
+            name: fileName,
             type: 'audio/mpeg'
         })
         
 
-
+        console.log("Trying to send file now")
         try {
             
-            const response = await axios({
-                method: 'post',
-                url: 'http://100.117.52.29:3000/uploadLectureRecording',
-                data: file_upload,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
+            // const response = await axios({
+            //     method: 'post',
+            //     url: 'http://100.117.52.29:3000/uploadLectureRecording',
+            //     data: file_upload,
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data',
+            //     },
+            // })
+
+            const response = await axios.get('http://100.117.52.29:3000/')
 
             console.log(response.data)
             return response.data
@@ -151,6 +154,7 @@ function HomeScreen() {
         const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
         // console.log("Accessing... ", file)
         setURI(cache)
+        setFileName(file+".m4a")
         console.log("Selected ", recentURI)
     }
 
