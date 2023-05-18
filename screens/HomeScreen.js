@@ -104,16 +104,30 @@ function HomeScreen() {
         console.log("Trying to send file now")
         try {
             
-            // const response = await axios({
-            //     method: 'post',
-            //     url: 'http://100.117.52.29:3000/uploadLectureRecording',
-            //     data: file_upload,
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data',
-            //     },
-            // })
+            // const projectID = 'apt-port-339504'
+            // const zone = 'us-central1-a'
+            // const instanceName = 'test-instance'
+            // const apiURL = `https://www.googleapis.com/compute/v1/projects/${projectID}/zones/${zone}/instances/${instanceName}`
 
-            const response = await axios.get('http://100.117.52.29:3000/')
+            // const idToken = '755602147933-l8gat69ec1qim704jkkkn45qfiuaj54n.apps.googleusercontent.com'
+            // const headers = {
+            //     'Authorization' : `Bearer ${idToken}`,
+            //     'Content-Type': 'application/json'
+
+            // }
+
+            // const response = await axios.get(apiURL, { headers })
+
+            const response = await axios({
+                method: 'post',
+                url: 'http://100.117.52.29:3000/uploadLectureRecording',
+                data: file_upload,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+
+            // const response = await axios.get('http://100.117.52.29:3000/uploadLectureRecording')
 
             console.log(response.data)
             return response.data
@@ -121,7 +135,7 @@ function HomeScreen() {
 
         catch(err) {
             console.error("Error uploading", err)
-            throw error
+            throw err
         }
     }
 
