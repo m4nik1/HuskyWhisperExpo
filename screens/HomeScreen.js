@@ -178,7 +178,7 @@ function HomeScreen() {
                     </Pressable>
                 </View>
 
-                <View style={{ padding: 10, marginBottom: 1000 }}>
+                <View style={{ marginBottom: 1000 }}>
                     <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
                     </Pressable>
@@ -198,12 +198,14 @@ const styles = StyleSheet.create({
         paddingTop: 200
     },
     recordList: {
-        marginTop: 20,
-        height: 300,
+        marginTop: 30,
+        height: 500,
         width: 350
     },
     buttonContainer: {
-        paddingTop: 230
+        paddingTop: 80,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     recordBtn: {
         borderRadius: 5,
@@ -220,8 +222,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'blue',
         alignItems: 'center',
         justifyContent: 'center',   
-        paddingVertical: 2,
-        paddingHorizontal: 1,
+        // paddingVertical: 2,
+        // paddingHorizontal: 1,
         width: 80,
         height: 50
     }
