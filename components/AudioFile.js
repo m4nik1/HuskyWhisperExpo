@@ -2,11 +2,6 @@ import React from "react";
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 
 const AudioFile = (props) => {
-
-    // const fileSelect = () => {
-    //     console.log("Accessing...: ", props.fileName)
-    // }
-
     return (
         <View style={styles.container}>
             <View style={styles.card}>

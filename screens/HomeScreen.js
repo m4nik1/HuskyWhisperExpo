@@ -103,21 +103,6 @@ function HomeScreen() {
 
         console.log("Trying to send file now")
         try {
-            
-            // const projectID = 'apt-port-339504'
-            // const zone = 'us-central1-a'
-            // const instanceName = 'test-instance'
-            // const apiURL = `https://www.googleapis.com/compute/v1/projects/${projectID}/zones/${zone}/instances/${instanceName}`
-
-            // const idToken = '755602147933-l8gat69ec1qim704jkkkn45qfiuaj54n.apps.googleusercontent.com'
-            // const headers = {
-            //     'Authorization' : `Bearer ${idToken}`,
-            //     'Content-Type': 'application/json'
-
-            // }
-
-            // const response = await axios.get(apiURL, { headers })
-
             const response = await axios({
                 method: 'post',
                 url: 'http://100.117.52.29:3000/uploadLectureRecording',
@@ -126,8 +111,6 @@ function HomeScreen() {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-
-            // const response = await axios.get('http://100.117.52.29:3000/uploadLectureRecording')
 
             console.log(response.data)
             return response.data
@@ -139,16 +122,9 @@ function HomeScreen() {
         }
     }
 
-    // async function printRecordings() {
-    //     const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-
-    //     console.log(file)
-    // }
-
     async function updateAudioFiles() {
         const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
         const filesObj = []
-        // console.log(files)
 
         for(var i = 0; i < files.length; i++) {
             var obj = {}
@@ -166,7 +142,6 @@ function HomeScreen() {
 
     async function fileSelect(file) {
         const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
-        // console.log("Accessing... ", file)
         setURI(cache)
         setFileName(file+".m4a")
         console.log("Selected ", recentURI)
