@@ -5,11 +5,20 @@ import { View, Text, Pressable, StyleSheet } from 'react-native'
 
 const whisperDetail = (props) => {
     
-    return (
-        <View>
-            <Text>{ props.transcribedWhisper }</Text>
-        </View>
-    )
+    if(props.shouldRender) {
+        return (
+            <View>
+                <Text>{ props.transcribedWhisper }</Text>
+            </View>
+        )
+    }
+
+    else {
+        return (
+            null
+        )
+    }
+
 }
 
 const styles = StyleSheet.create({

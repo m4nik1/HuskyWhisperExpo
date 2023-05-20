@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
+import { View, Text, Pressable, StyleSheet, FlatList, Modal } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
@@ -141,10 +141,10 @@ function HomeScreen() {
     }
 
     async function fileSelect(file) {
-        const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
-        setURI(cache)
-        setFileName(file+".m4a")
-        console.log("Selected ", recentURI)
+        // const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
+        // setURI(cache)
+        // setFileName(file+".m4a")
+        // console.log("Selected ", recentURI)
     }
 
     useEffect(() => {
