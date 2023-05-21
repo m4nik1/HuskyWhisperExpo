@@ -12,7 +12,9 @@ const AudioModal = props => {
     const [fileURI, setURI] = useState('')
 
     function cancelModal() {
+        setTranscribe('')
         props.modalCancel()
+
     }
 
     async function sendRecording() {
