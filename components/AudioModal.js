@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { View, Text, Modal, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
 import { Audio } from 'expo-av'
@@ -7,6 +7,9 @@ import axios from "axios";
 
 
 const AudioModal = props => {
+
+    const [transcribedText, setTranscribe] = useState('')
+    const [fileURI, setURI] = useState('')
 
     function cancelModal() {
         props.modalCancel()
@@ -40,6 +43,7 @@ const AudioModal = props => {
             })
 
             console.log(response.data)
+            setTranscribe(response.data['Result'])
             return response.data
         }
 
@@ -49,9 +53,34 @@ const AudioModal = props => {
         }
     }
 
+    async function playRecording() {
+        const soundObj = new Audio.Sound()
+        
+        if(fileURI) {
+            console.log("loading the telegram :)")
+            await soundObj.loadAsync({ uri: fileURI });
+            // setSound(soundObj)
+
+            await soundObj.playAsync();
+
+            console.log("Playing telegram nao")
+        }
+
+        else {
+            console.log("No recording is selected please select a recording to play one")
+        }   
+    }
+
+    function loadURI() {
+        const file = FileSystem.cacheDirectory+`AV/${props.fileName}.m4a`
+        console.log('Loading URI at the start')
+        setURI(file)
+    }
+
+
     if(props.isVisible) {
         return ( 
-            <Modal onRequestClose={() => cancelModal()} isVisible={props.isVisible} animationType="slide">
+            <Modal onShow={() => loadURI()} onRequestClose={() => cancelModal()} isVisible={props.isVisible} animationType="slide">
                 <View style={{ flex: 1, justifyContent: 'top', marginTop: 100 }}>
                     <Text style={{ textAlign: 'center' }}>
                         {props.fileName}
@@ -63,6 +92,13 @@ const AudioModal = props => {
                     <TouchableOpacity style={{ alignContent: 'center' }} onPress={() => sendRecording()}>
                         <Text style={{ textAlign: 'center' }}>Transcribe</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={{ alignContent: 'center', padding: 30 }} onPress={() => playRecording()}>
+                        <Text style={{ textAlign: 'center' }}>Play</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={{ flex: 2, padding: 20 }}>
+                    <Text>{ transcribedText }</Text>
                 </View>
             </Modal>
         )

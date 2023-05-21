@@ -88,42 +88,6 @@ function HomeScreen() {
         setURI('')
     }
 
-
-    async function sendRecording() {
-        // const file = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        const file1 = recentURI
-
-        file_upload = new FormData()
-        
-
-        file_upload.append('file', {
-            uri: file1,
-            name: fileName,
-            type: 'audio/mpeg'
-        })
-        
-
-        console.log("Trying to send file now")
-        try {
-            const response = await axios({
-                method: 'post',
-                url: 'http://100.117.52.29:3000/uploadLectureRecording',
-                data: file_upload,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-
-            console.log(response.data)
-            return response.data
-        }
-
-        catch(err) {
-            console.error("Error uploading", err)
-            throw err
-        }
-    }
-
     async function updateAudioFiles() {
         const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
         const filesObj = []
