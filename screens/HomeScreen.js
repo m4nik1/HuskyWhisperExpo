@@ -5,6 +5,7 @@ import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
 import AudioFile from "../components/AudioFile";
+import AudioModal from "../components/AudioModal";
 
 function HomeScreen() {
 
@@ -15,6 +16,7 @@ function HomeScreen() {
     const [loadSound, setSound] = useState();
     const [audioFiles, setAudioFiles] = useState('')
     const [playFile, setFile] = useState('')
+    const [whisperModal, setWhisperModal] = useState(false)
 
 
     async function record() {
@@ -145,6 +147,14 @@ function HomeScreen() {
         // setURI(cache)
         // setFileName(file+".m4a")
         // console.log("Selected ", recentURI)
+        if(whisperModal) {
+            setWhisperModal(false)
+        }
+        else {
+            setWhisperModal(true)
+            setFile(file)
+        }
+
     }
 
     useEffect(() => {
@@ -184,6 +194,7 @@ function HomeScreen() {
                     </Pressable>
                 </View>
             </View>
+            <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
         </View>
     )
 }
