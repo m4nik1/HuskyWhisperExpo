@@ -10,6 +10,7 @@ const AudioModal = props => {
 
     const [transcribedText, setTranscribe] = useState('')
     const [fileURI, setURI] = useState('')
+    const [loadSound, setSound] = useState('')
 
     function cancelModal() {
         setTranscribe('')
@@ -61,7 +62,7 @@ const AudioModal = props => {
         if(fileURI) {
             console.log("loading the telegram :)")
             await soundObj.loadAsync({ uri: fileURI });
-            // setSound(soundObj)
+            setSound(soundObj)
 
             await soundObj.playAsync();
 
@@ -71,6 +72,15 @@ const AudioModal = props => {
         else {
             console.log("No recording is selected please select a recording to play one")
         }   
+    }
+
+    
+    async function stopPlaying() {
+        console.log("Stopping the playback!")
+
+        loadSound.unloadAsync();
+        setSound(null);
+        setURI('')
     }
 
     function loadURI() {
@@ -95,7 +105,7 @@ const AudioModal = props => {
                         <Text style={{ textAlign: 'center' }}>Transcribe</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={{ alignContent: 'center', padding: 30 }} onPress={() => playRecording()}>
+                    <TouchableOpacity style={{ alignContent: 'center', padding: 30 }} onPress={loadSound ? stopPlaying : playRecording}>
                         <Text style={{ textAlign: 'center' }}>Play</Text>
                     </TouchableOpacity>
                 </View>

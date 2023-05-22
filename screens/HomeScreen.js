@@ -42,44 +42,6 @@ function HomeScreen() {
         }
     }
 
-    async function stopRecording() {
-        console.log("Stopping the recording")
-        setRecording(undefined)
-        await recording.stopAndUnloadAsync();
-        await Audio.setAudioModeAsync({
-            allowsRecordingIOS: false
-        })
-
-        const uri = recording.getURI();
-
-        // setURI('' + uri)
-        // console.log(recentURI)
-
-        setRecording(haveRecordings+1);
-        updateAudioFiles()
-    }
-
-    async function playRecording() {
-        const soundObj = new Audio.Sound()
-        
-        if(recentURI) {
-            console.log("loading the telegram :)")
-            await soundObj.loadAsync({ uri: recentURI });
-            setSound(soundObj)
-
-            await soundObj.playAsync();
-
-            console.log("Playing telegram nao")
-        }
-
-        else {
-            console.log("No recording is selected please select a recording to play one")
-        }
-        
-
-        
-    }
-
     async function stopPlaying() {
         console.log("Stopping the playback!")
 
@@ -89,28 +51,24 @@ function HomeScreen() {
     }
 
     async function updateAudioFiles() {
-        const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"/AV")
-        const filesObj = []
+        const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"AV")
+        // const filesObj = []
 
-        for(var i = 0; i < files.length; i++) {
-            var obj = {}
+        // for(var i = 0; i < files.length; i++) {
+        //     var obj = {}
 
-            obj["id"] = i
-            obj["filename"] = files[i].split(".")[0]
+        //     obj["id"] = i
+        //     obj["filename"] = files[i].split(".")[0]
             
-            filesObj.push(obj)
+        //     filesObj.push(obj)
 
-        }
+        // }
 
-        setAudioFiles(filesObj)
-        console.log(audioFiles)
+        // setAudioFiles(filesObj)
+        // console.log(audioFiles)
     }
 
     async function fileSelect(file) {
-        // const cache = FileSystem.cacheDirectory+"/AV/"+file+'.m4a'
-        // setURI(cache)
-        // setFileName(file+".m4a")
-        // console.log("Selected ", recentURI)
         if(whisperModal) {
             setWhisperModal(false)
         }
@@ -128,7 +86,7 @@ function HomeScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.recordList}>
-                <FlatList
+                {/* <FlatList
                     keyExtractor={item => item.id}
                     data={audioFiles}
                     renderItem={itemData => (
@@ -137,14 +95,14 @@ function HomeScreen() {
                             select={ (f) => fileSelect(f) }
                         />
                     )}
-                />
+                /> */}
             </View>
             <View style={styles.buttonContainer}>
-                <View>
+                {/* <View>
                     <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
                     </Pressable>
-                </View>
+                </View> */}
 
                 <View style={{ padding: 10 }}>
                     <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
@@ -152,11 +110,11 @@ function HomeScreen() {
                     </Pressable>
                 </View>
 
-                <View style={{ marginBottom: 1000 }}>
+                {/* <View style={{ marginBottom: 1000 }}>
                     <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
                     </Pressable>
-                </View>
+                </View> */}
             </View>
             <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
         </View>
@@ -170,12 +128,12 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent:'center',
         alignItems: 'center',
-        paddingTop: 200
+        paddingTop: 30
     },
     recordList: {
         marginTop: 30,
-        height: 500,
-        width: 350
+        height: 800,
+        width: 400
     },
     buttonContainer: {
         paddingTop: 80,
