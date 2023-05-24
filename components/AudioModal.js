@@ -17,6 +17,7 @@ const AudioModal = props => {
         props.modalCancel()
 
     }
+    
 
     async function sendRecording() {
         const file = FileSystem.cacheDirectory+`AV/${props.fileName}.m4a`
@@ -38,7 +39,7 @@ const AudioModal = props => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'http://100.117.52.29:3000/uploadLectureRecording',
+                url: 'http://104.198.128.84:3000/uploadLectureRecording',
                 data: file_upload,
                 headers: {
                     'Content-Type': 'multipart/form-data',

@@ -50,22 +50,49 @@ function HomeScreen() {
         setURI('')
     }
 
+    async function stopRecording() {
+        console.log("Stopping the recording")
+        setRecording(undefined)
+        await recording.stopAndUnloadAsync();
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false
+        })
+
+        const uri = recording.getURI();
+
+        // setURI('' + uri)
+        // console.log(recentURI)
+
+        setRecording(haveRecordings+1);
+        updateAudioFiles()
+    }
+
     async function updateAudioFiles() {
-        const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"AV")
-        // const filesObj = []
+        try {
+            const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"AV")
 
-        // for(var i = 0; i < files.length; i++) {
-        //     var obj = {}
+            console.log(files)
+            const filesObj = []
 
-        //     obj["id"] = i
-        //     obj["filename"] = files[i].split(".")[0]
-            
-        //     filesObj.push(obj)
+            for(var i = 0; i < files.length; i++) {
+                var obj = {}
 
-        // }
+                obj["id"] = i
+                obj["filename"] = files[i].split(".")[0]
+                
+                filesObj.push(obj)
 
-        // setAudioFiles(filesObj)
-        // console.log(audioFiles)
+            }
+
+            setAudioFiles(filesObj)
+            console.log(audioFiles)
+        }
+
+        catch(err) {
+            // console.error(err)
+            console.log("Theres no recordings make one!")
+        }
+        
     }
 
     async function fileSelect(file) {
@@ -79,6 +106,20 @@ function HomeScreen() {
 
     }
 
+    async function testServer() {
+        try {
+            console.log("Making request nao!")
+            const response = await axios.get("http://104.198.128.84:3000/testTranscriber")
+
+            console.log(response.data)
+        }
+
+        catch(err) {
+            console.log("Can't make this request work!")
+            console.err(err)
+        }
+    }
+
     useEffect(() => {
         updateAudioFiles()
     }, [])
@@ -86,7 +127,7 @@ function HomeScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.recordList}>
-                {/* <FlatList
+                <FlatList
                     keyExtractor={item => item.id}
                     data={audioFiles}
                     renderItem={itemData => (
@@ -95,14 +136,14 @@ function HomeScreen() {
                             select={ (f) => fileSelect(f) }
                         />
                     )}
-                /> */}
+                />
             </View>
             <View style={styles.buttonContainer}>
-                {/* <View>
-                    <Pressable style={styles.playBtn} onPress={ loadSound ? stopPlaying : playRecording}>
+                <View>
+                    <Pressable style={styles.playBtn}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
                     </Pressable>
-                </View> */}
+                </View>
 
                 <View style={{ padding: 10 }}>
                     <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
@@ -110,11 +151,11 @@ function HomeScreen() {
                     </Pressable>
                 </View>
 
-                {/* <View style={{ marginBottom: 1000 }}>
-                    <Pressable style={styles.recordBtn} onPress={() => sendRecording()}>
-                        <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
-                    </Pressable>
-                </View> */}
+                <View style={{ marginBottom: 1000 }}>
+                     <Pressable style={styles.recordBtn} onPress={() => testServer()}>
+                         <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
+                     </Pressable>
+                </View>
             </View>
             <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
         </View>
@@ -128,15 +169,14 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent:'center',
         alignItems: 'center',
-        paddingTop: 30
+        // paddingTop: 30
     },
     recordList: {
-        marginTop: 30,
-        height: 800,
+        marginTop: 190,
+        height: 400,
         width: 400
     },
     buttonContainer: {
-        paddingTop: 80,
         alignItems: 'center',
         justifyContent: 'center',
     },
