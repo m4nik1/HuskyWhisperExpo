@@ -52,7 +52,7 @@ function HomeScreen() {
 
     async function stopRecording() {
         console.log("Stopping the recording")
-        setRecording(undefined)
+        setRecording()
         await recording.stopAndUnloadAsync();
         await Audio.setAudioModeAsync({
             allowsRecordingIOS: false
@@ -139,11 +139,11 @@ function HomeScreen() {
                 />
             </View>
             <View style={styles.buttonContainer}>
-                <View>
+                {/* <View>
                     <Pressable style={styles.playBtn}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
                     </Pressable>
-                </View>
+                </View> */}
 
                 <View style={{ padding: 10 }}>
                     <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
@@ -152,9 +152,9 @@ function HomeScreen() {
                 </View>
 
                 <View style={{ marginBottom: 1000 }}>
-                     <Pressable style={styles.recordBtn} onPress={() => testServer()}>
+                     {/* <Pressable style={styles.recordBtn} onPress={() => testServer()}>
                          <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
-                     </Pressable>
+                     </Pressable> */}
                 </View>
             </View>
             <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
