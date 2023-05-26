@@ -39,7 +39,7 @@ const AudioModal = props => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'http://104.198.128.84:3000/uploadLectureRecording',
+                url: 'http://104.198.128.84:3000/uploadLectureRecording/',
                 data: file_upload,
                 headers: {
                     'Content-Type': 'multipart/form-data',
