@@ -8,6 +8,7 @@ export default function App() {
   const [screen, setScreen] = useState('Home')
 
   return (
+    // if this code doesnt work I'm going to die
     <NativeBaseProvider>
       <HomeScreen />
     </NativeBaseProvider>

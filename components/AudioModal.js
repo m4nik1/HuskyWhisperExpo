@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import { View, Text, Modal, StyleSheet, Pressable, TouchableOpacity } from 'react-native'
+import { Modal, StyleSheet } from 'react-native'
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
 
+import { Button, VStack, Text } from "native-base";
 
 const AudioModal = props => {
 
@@ -39,7 +40,7 @@ const AudioModal = props => {
         try {
             const response = await axios({
                 method: 'post',
-                url: 'http://104.198.128.84:3000/uploadLectureRecording/',
+                url: 'http://104.198.128.84:3000/uploadLectureRecording',
                 data: file_upload,
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -94,7 +95,24 @@ const AudioModal = props => {
     if(props.isVisible) {
         return ( 
             <Modal onShow={() => loadURI()} onRequestClose={() => cancelModal()} isVisible={props.isVisible} animationType="slide">
-                <View style={{ flex: 1, justifyContent: 'top', marginTop: 100 }}>
+                <VStack space={4} alignItems="center" onPress={() => sendRecording()}>
+                    {/* <Text fontSize="lg">
+                        { props.fileName }
+                    </Text> */}
+                    <Button mt={100} size="md" variant="subtle">
+                        Transcribe
+                    </Button>
+
+                    <Button size="md" variant="subtle" onPress={loadSound ? stopPlaying : playRecording}>
+                        Play
+                    </Button>
+
+                    <Button size="md" variant="subtle" onPress={() => cancelModal()}>
+                        Back
+                    </Button>
+                </VStack>
+                c
+                {/* <View style={{ flex: 1, justifyContent: 'top', marginTop: 100 }}>
                     <Text style={{ textAlign: 'center' }}>
                         {props.fileName}
                     </Text>
@@ -112,7 +130,7 @@ const AudioModal = props => {
                 </View>
                 <View style={{ flex: 2, padding: 20 }}>
                     <Text>{ transcribedText }</Text>
-                </View>
+                </View> */}
             </Modal>
         )
     }

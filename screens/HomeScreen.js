@@ -116,12 +116,6 @@ function HomeScreen() {
                         <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
                     </Pressable>
                 </View>
-
-                <View style={{ marginBottom: 1000 }}>
-                     {/* <Pressable style={styles.recordBtn} onPress={() => testServer()}>
-                         <Text style={{ fontWeight: "bold", color:'white' }}>Send</Text>
-                     </Pressable> */}
-                </View>
             </View>
             <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
         </View>
@@ -138,7 +132,7 @@ const styles = StyleSheet.create({
         // paddingTop: 30
     },
     recordList: {
-        marginTop: 190,
+        marginTop: 100,
         height: 400,
         width: 400
     },
@@ -155,6 +149,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 1,
         width: 80,
         height: 50,
+        marginTop: 40
     },
     playBtn: {
         borderRadius: 5,
