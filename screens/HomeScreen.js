@@ -11,9 +11,6 @@ function HomeScreen() {
 
     const [recording, setRecording] = useState();
     const [haveRecordings, setRecordings] = useState(0);
-    const [recentURI, setURI] = useState('');
-    const [fileName, setFileName] = useState(''); 
-    const [loadSound, setSound] = useState();
     const [audioFiles, setAudioFiles] = useState('')
     const [playFile, setFile] = useState('')
     const [whisperModal, setWhisperModal] = useState(false)
@@ -42,14 +39,6 @@ function HomeScreen() {
         }
     }
 
-    async function stopPlaying() {
-        console.log("Stopping the playback!")
-
-        loadSound.unloadAsync();
-        setSound(null);
-        setURI('')
-    }
-
     async function stopRecording() {
         console.log("Stopping the recording")
         setRecording()
@@ -59,9 +48,6 @@ function HomeScreen() {
         })
 
         const uri = recording.getURI();
-
-        // setURI('' + uri)
-        // console.log(recentURI)
 
         setRecording(haveRecordings+1);
         updateAudioFiles()
@@ -106,20 +92,6 @@ function HomeScreen() {
 
     }
 
-    async function testServer() {
-        try {
-            console.log("Making request nao!")
-            const response = await axios.get("http://104.198.128.84:3000/testTranscriber")
-
-            console.log(response.data)
-        }
-
-        catch(err) {
-            console.log("Can't make this request work!")
-            console.err(err)
-        }
-    }
-
     useEffect(() => {
         updateAudioFiles()
     }, [])
@@ -139,12 +111,6 @@ function HomeScreen() {
                 />
             </View>
             <View style={styles.buttonContainer}>
-                {/* <View>
-                    <Pressable style={styles.playBtn}>
-                        <Text style={{ fontWeight: "bold", color:'white' }}>Play</Text>
-                    </Pressable>
-                </View> */}
-
                 <View style={{ padding: 10 }}>
                     <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
@@ -194,9 +160,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'blue',
         alignItems: 'center',
-        justifyContent: 'center',   
-        // paddingVertical: 2,
-        // paddingHorizontal: 1,
+        justifyContent: 'center',
         width: 80,
         height: 50
     }
