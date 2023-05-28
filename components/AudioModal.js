@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-import { Modal, StyleSheet } from 'react-native'
+import { Modal, StyleSheet, Text } from 'react-native'
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
 
-import { Button, VStack, Text } from "native-base";
+import { Button, VStack } from "native-base";
 
 const AudioModal = props => {
 
@@ -96,41 +96,21 @@ const AudioModal = props => {
         return ( 
             <Modal onShow={() => loadURI()} onRequestClose={() => cancelModal()} isVisible={props.isVisible} animationType="slide">
                 <VStack space={4} alignItems="center" onPress={() => sendRecording()}>
-                    {/* <Text fontSize="lg">
+                    <Text fontSize="lg">
                         { props.fileName }
-                    </Text> */}
+                    </Text>
                     <Button mt={100} size="md" variant="subtle">
-                        Transcribe
+                        <Text>Transcribe</Text>
                     </Button>
 
                     <Button size="md" variant="subtle" onPress={loadSound ? stopPlaying : playRecording}>
-                        Play
+                        <Text>Play</Text>
                     </Button>
 
                     <Button size="md" variant="subtle" onPress={() => cancelModal()}>
-                        Back
+                        <Text>Back</Text>
                     </Button>
                 </VStack>
-                c
-                {/* <View style={{ flex: 1, justifyContent: 'top', marginTop: 100 }}>
-                    <Text style={{ textAlign: 'center' }}>
-                        {props.fileName}
-                    </Text>
-                    <TouchableOpacity style={{ alignContent: 'center', padding: 30 }} onPress={() => cancelModal()}>
-                        <Text style={{ textAlign: 'center' }}>Back</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ alignContent: 'center' }} onPress={() => sendRecording()}>
-                        <Text style={{ textAlign: 'center' }}>Transcribe</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ alignContent: 'center', padding: 30 }} onPress={loadSound ? stopPlaying : playRecording}>
-                        <Text style={{ textAlign: 'center' }}>Play</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ flex: 2, padding: 20 }}>
-                    <Text>{ transcribedText }</Text>
-                </View> */}
             </Modal>
         )
     }

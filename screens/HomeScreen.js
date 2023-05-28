@@ -83,7 +83,7 @@ function HomeScreen() {
 
     async function fileSelect(file) {
         if(whisperModal) {
-            setWhisperModal(false)
+            setWhisperModal(true)
         }
         else {
             setWhisperModal(true)
@@ -93,6 +93,7 @@ function HomeScreen() {
     }
 
     useEffect(() => {
+        setWhisperModal(true)
         updateAudioFiles()
     }, [])
 
