@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import { View, Text, Pressable, StyleSheet, FlatList, Modal } from "react-native"
+import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
-import axios from "axios";
 import AudioFile from "../components/AudioFile";
 import AudioModal from "../components/AudioModal";
 
@@ -75,7 +74,6 @@ function HomeScreen() {
         }
 
         catch(err) {
-            // console.error(err)
             console.log("Theres no recordings make one!")
         }
         
@@ -83,13 +81,12 @@ function HomeScreen() {
 
     async function fileSelect(file) {
         if(whisperModal) {
-            setWhisperModal(true)
+            setWhisperModal(false)
         }
         else {
             setWhisperModal(true)
             setFile(file)
         }
-
     }
 
     useEffect(() => {
@@ -118,7 +115,7 @@ function HomeScreen() {
                     </Pressable>
                 </View>
             </View>
-            <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
+            {/* <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} /> */}
         </View>
     )
 }
@@ -130,16 +127,16 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         justifyContent:'center',
         alignItems: 'center',
-        // paddingTop: 30
+        // padding: 10
     },
     recordList: {
         marginTop: 100,
-        height: 400,
+        height: 700,
         width: 400
     },
     buttonContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        // alignItems: 'center',
+        // justifyContent: 'center',
     },
     recordBtn: {
         borderRadius: 5,
@@ -150,7 +147,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 1,
         width: 80,
         height: 50,
-        marginTop: 40
     },
     playBtn: {
         borderRadius: 5,

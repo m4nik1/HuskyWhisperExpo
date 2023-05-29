@@ -22,12 +22,8 @@ const AudioModal = props => {
 
     async function sendRecording() {
         const file = FileSystem.cacheDirectory+`AV/${props.fileName}.m4a`
-        // const file1 = recentURI
 
         file_upload = new FormData()
-        
-
-        // console.log(file)
 
         file_upload.append('file', {
             uri: file,
