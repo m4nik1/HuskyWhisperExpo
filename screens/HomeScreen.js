@@ -5,6 +5,7 @@ import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import AudioFile from "../components/AudioFile";
 import AudioModal from "../components/AudioModal";
+import RecordModal from "../components/RecordModal";
 
 function HomeScreen() {
 
@@ -13,29 +14,32 @@ function HomeScreen() {
     const [audioFiles, setAudioFiles] = useState('')
     const [playFile, setFile] = useState('')
     const [whisperModal, setWhisperModal] = useState(false)
+    const [recordModal, setRecordModal] = useState(false)
 
 
     async function record() {
         console.log("NOW RECORDING")
     
-        try {
-            console.log("request permissions now...")
-            await Audio.requestPermissionsAsync()
-            await Audio.setAudioModeAsync({
-                allowsRecordingIOS: true,
-                playsInSilentModeIOS: true,
-            })
+        setRecordModal(true)
+
+        // try {
+        //     console.log("request permissions now...")
+        //     await Audio.requestPermissionsAsync()
+        //     await Audio.setAudioModeAsync({
+        //         allowsRecordingIOS: true,
+        //         playsInSilentModeIOS: true,
+        //     })
     
-            console.log("Alrighty Starting the recordings")
-            const { recording }  = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
-            setRecording(recording)
-            console.log("recording has started")
-        }
+        //     console.log("Alrighty Starting the recordings")
+        //     const { recording }  = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+        //     setRecording(recording)
+        //     console.log("recording has started")
+        // }
         
-        catch(e) {
-            console.log("OOPIES, HOUSTON WE HAVE A PROBLEM")
-            console.error(e);
-        }
+        // catch(e) {
+        //     console.log("OOPIES, HOUSTON WE HAVE A PROBLEM")
+        //     console.error(e);
+        // }
     }
 
     async function stopRecording() {
@@ -80,6 +84,7 @@ function HomeScreen() {
     }
 
     async function fileSelect(file) {
+        console.log("file is being selected!")
         if(whisperModal) {
             setWhisperModal(false)
         }
@@ -90,7 +95,6 @@ function HomeScreen() {
     }
 
     useEffect(() => {
-        setWhisperModal(true)
         updateAudioFiles()
     }, [])
 
@@ -115,7 +119,8 @@ function HomeScreen() {
                     </Pressable>
                 </View>
             </View>
-            {/* <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} /> */}
+            <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
+            <RecordModal isVisible={recordModal} modalCancel={() => setRecordModal(false)} />
         </View>
     )
 }
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
     },
     recordList: {
         marginTop: 100,
-        height: 700,
+        height: 650,
         width: 400
     },
     buttonContainer: {
@@ -144,7 +149,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',   
         paddingVertical: 2,
-        paddingHorizontal: 1,
+        // paddingHorizontal: 1,
         width: 80,
         height: 50,
     },
