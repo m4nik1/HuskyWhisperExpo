@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
-import { VStack, Text, Modal, Button, Box } from "native-base";
-import { View, StyleSheet } from 'react-native'
+import { VStack, Text, Button, Box } from "native-base";
+import { View, StyleSheet, Dimensions, Modal } from 'react-native'
 
 import Card from "./Card"
 
@@ -11,18 +11,18 @@ const RecordModal = props => {
     function cancelModal() {
         props.modalCancel()
     }
-    if(props.isVisible) {
+    if (props.isVisible) {
         return (
-            <Modal isOpen={true} size={'md'}>
-                <Card>
-                    <Text>
+            <Modal style={styles.modalView} animationType="slide" visible={props.isVisible} transparent={true}>
+                <Card style={styles.cardView}>
+                    <Text fontSize={20}>
                         This is the Record Modal.
                     </Text>
-                    <Box padding={3}>
+                    <View style={{ padding: 20 }}>
                         <Button onPress={() => cancelModal()}>
                             Close
                         </Button>
-                    </Box>
+                    </View>
                 </Card>
             </Modal>
         )
@@ -31,14 +31,17 @@ const RecordModal = props => {
 
 const styles = StyleSheet.create({
     modalView: {
-        // elevation: 5,
-        margin: 0,
-        // width: 300,
-        // height: 300,
         backgroundColor: 'white',
-        borderRadius: 20, 
-        
+        borderRadius: 20,
+        elevation: 5,
+        marginTop: Dimensions.get('window').height - 510
     },
+    cardView: {
+        marginTop: Dimensions.get('screen').height - 465,
+        height: 400,
+        width: Dimensions.get('screen').width,
+        alignItems: 'center'
+    }
 })
 
 
