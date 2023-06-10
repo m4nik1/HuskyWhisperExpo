@@ -18,7 +18,8 @@ function HomeScreen() {
 
 
     async function record() {
-        console.log("NOW RECORDING")
+        // console.log("NOW RECORDING")
+        console.log("opening modal!")
     
         setRecordModal(true)
 
