@@ -8,7 +8,7 @@ import Card from "./Card"
 
 const RecordModal = props => {
 
-    const [fadeAnim, setFadeAnim] = useState(0);
+    const [fadeAnim, setFadeAnim] = useState(true);
     const [duration, setDuration] = useState(2)
 
     function cancelModal() {
@@ -16,25 +16,16 @@ const RecordModal = props => {
     }
 
     function startRecording() {
-
+        console.log("Recording now!")
     }
 
     useEffect(() => {
-        Animated.loop(
-            Animated.sequence(
-                Animated.timing(fadeAnim, {
-                    toValue: 0,
-                    duration: duration,
-                    useNativeDriver: true,
-                }),
-                Animated.timing(fadeAnim, {
-                    toValue: 1,
-                    duration: duration,
-                    useNativeDriver: true,
-                })
-            )
-        )
-    })
+        // const interval = setInterval(() => {
+        //     setFadeAnim(30);
+        //     // console.log(fadeAnim)
+        // }, 10);
+        // return () => clearInterval(interval)
+    }, [])
 
     if (props.isVisible) {
         return (
@@ -43,15 +34,15 @@ const RecordModal = props => {
                     <Text fontSize={20}>
                         This is the Record Modal.
                     </Text>
-                    <View style={styles.recordIndicator} />
-                    <Animated.View style={{ padding: 20, opacity: { fadeAnim } }}>
-                        <Button style={styles.recordButton} onPress={() => startRecording()}>
-                            Record
-                        </Button>
-                        <Button onPress={() => cancelModal()}>
-                            Close
-                        </Button>
+                    <Animated.View style={{ padding: 20, opacity: 30 }}>
+                        <View style={styles.recordIndicator} />
                     </Animated.View>
+                    <Button style={styles.recordButton} onPress={() => startRecording()}>
+                        Record
+                    </Button>
+                    <Button onPress={() => cancelModal()}>
+                        Close
+                    </Button>
                 </Card>
             </Modal>
         )
@@ -76,13 +67,13 @@ const styles = StyleSheet.create({
         width: 70,
         backgroundColor: 'red',
         borderRadius: 50,
-        margin: 20  
+        margin: 20
     },
     recordButton: {
         borderRadius: 5,
         backgroundColor: 'red',
         alignItems: 'center',
-        justifyContent: 'center',   
+        justifyContent: 'center',
         paddingVertical: 2,
         // paddingHorizontal: 1,
         // width: 80,
