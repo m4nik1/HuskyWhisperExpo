@@ -8,38 +8,69 @@ import Card from "./Card"
 
 const RecordModal = props => {
 
-    const [fadeAnim, setFadeAnim] = useState(true);
-    const [duration, setDuration] = useState(2)
+    // const [fadeAnim, setFadeAnim] = useState(false);
+
+    const fadeAnim = useRef(new Animated.Value(0)).current
+    const [recording, setRecording] = useState(false)
+
+    var blinkLoop;
 
     function cancelModal() {
+        setRecording(null)
         props.modalCancel()
     }
 
     function startRecording() {
         console.log("Recording now!")
+        setRecording(true)
+        blinkAnim()
+
     }
 
-    useEffect(() => {
-        // const interval = setInterval(() => {
-        //     setFadeAnim(30);
-        //     // console.log(fadeAnim)
-        // }, 10);
-        // return () => clearInterval(interval)
-    }, [])
+    function stopRecording() {
+        console.log("Stopping the recording")
+        setRecording(null)
+        Animated.timing(fadeAnim).stop()
+    }
+
+
+    const blinkAnim = () => {
+        console.log("start the blinking")
+        let blinking = Animated.sequence([
+            Animated.timing(fadeAnim, {
+                toValue: 20,
+                duration: 500, // this every means 1 second
+                useNativeDriver: true,
+            }),
+            Animated.timing(fadeAnim, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true,
+            })
+        ])
+
+        blinkLoop = Animated.loop(
+            blinking,
+        ).start()
+    }
 
     if (props.isVisible) {
         return (
             <Modal style={styles.modalView} animationType="slide" visible={props.isVisible} transparent={true}>
                 <Card style={styles.cardView}>
+
                     <Text fontSize={20}>
                         This is the Record Modal.
                     </Text>
-                    <Animated.View style={{ padding: 20, opacity: 30 }}>
+
+                    <Animated.View style={[styles.blinkLight, { opacity: fadeAnim },]}>
                         <View style={styles.recordIndicator} />
                     </Animated.View>
-                    <Button style={styles.recordButton} onPress={() => startRecording()}>
+
+                    <Button style={styles.recordButton} onPress={recording ? stopRecording : startRecording}>
                         Record
                     </Button>
+
                     <Button onPress={() => cancelModal()}>
                         Close
                     </Button>
@@ -54,7 +85,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderRadius: 20,
         elevation: 5,
-        marginTop: Dimensions.get('window').height - 510
+        marginTop: Dimensions.get('window').height - 510,
+        alignItems: 'center',
     },
     cardView: {
         marginTop: Dimensions.get('screen').height - 465,
@@ -80,6 +112,9 @@ const styles = StyleSheet.create({
         // height: 50,
         margin: 10
     },
+    blinkLight: {
+        padding: 20
+    }
 })
 
 
