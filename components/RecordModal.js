@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { VStack, Text, Button, Box, useNativeBase } from "native-base";
 import { View, StyleSheet, Dimensions, Modal, Animated } from 'react-native'
+import { Audio } from 'expo-av'
 
 import Card from "./Card"
 
@@ -21,22 +22,45 @@ const RecordModal = props => {
         Animated.timing(fadeAnim).stop()
     }
 
-    function startRecording() {
-        console.log("Recording now!")
-        setRecording(true)
-        blinkAnim()
+    async function startRecording() {
+        // console.log("Recording now!")
+
+        try {
+            console.log("request permissions now...")
+            await Audio.requestPermissionsAsync()
+            await Audio.setAudioModeAsync({
+                allowsRecordingIOS: true,
+                playsInSilentModeIOS: true,
+            })
+    
+            console.log("Alrighty Starting the recordings")
+            const { recording }  = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
+            setRecording(recording)
+            blinkAnim()
+            console.log("recording has started")
+        }
+        
+        catch(e) {
+            console.log("OOPIES, HOUSTON WE HAVE A PROBLEM")
+            console.error(e);
+        }
 
     }
 
-    function stopRecording() {
+    async function stopRecording() {
         console.log("Stopping the recording")
+        setRecording()
+        await recording.stopAndUnloadAsync();
+        await Audio.setAudioModeAsync({
+            allowsRecordingIOS: false
+        })
         setRecording(null)
         Animated.timing(fadeAnim).stop()
     }
 
 
     const blinkAnim = () => {
-        console.log("start the blinking")
+        // console.log("start the blinking")
         let blinking = Animated.sequence([
             Animated.timing(fadeAnim, {
                 toValue: 20,
@@ -108,9 +132,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: 2,
-        // paddingHorizontal: 1,
-        // width: 80,
-        // height: 50,
         margin: 10
     },
     btnContainer: {

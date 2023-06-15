@@ -106,7 +106,7 @@ function HomeScreen() {
                     keyExtractor={item => item.id}
                     data={audioFiles}
                     renderItem={itemData => (
-                        <AudioFile 
+                        <AudioFile
                             fileName={ itemData.item.filename }
                             select={ (f) => fileSelect(f) }
                         />
@@ -115,7 +115,7 @@ function HomeScreen() {
             </View>
             <View style={styles.buttonContainer}>
                 <View style={{ padding: 10 }}>
-                    <Pressable style={styles.recordBtn} onPress={recording ? stopRecording : record}>
+                    <Pressable style={styles.recordBtn} onPress={() => record()}>
                         <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
                     </Pressable>
                 </View>
