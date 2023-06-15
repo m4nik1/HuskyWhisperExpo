@@ -18,6 +18,7 @@ const RecordModal = props => {
     function cancelModal() {
         setRecording(null)
         props.modalCancel()
+        Animated.timing(fadeAnim).stop()
     }
 
     function startRecording() {
@@ -39,12 +40,12 @@ const RecordModal = props => {
         let blinking = Animated.sequence([
             Animated.timing(fadeAnim, {
                 toValue: 20,
-                duration: 500, // this every means 1 second
+                duration: 1000, // this every means 1 second
                 useNativeDriver: true,
             }),
             Animated.timing(fadeAnim, {
                 toValue: 0,
-                duration: 500,
+                duration: 1000,
                 useNativeDriver: true,
             })
         ])
@@ -112,6 +113,10 @@ const styles = StyleSheet.create({
         // height: 50,
         margin: 10
     },
+    btnContainer: {
+
+    },
+
     blinkLight: {
         padding: 20
     }
