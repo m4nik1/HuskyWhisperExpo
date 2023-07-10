@@ -97,7 +97,8 @@ const AudioModal = props => {
                             { props.fileName }
                         </Text>
                     </Box>
-                    <Button onPress={() => sendRecording()} mt={100} size="md" variant="subtle">
+
+                    <Button isDisabled={(props.serverStatus ? true : false)} onPress={() => sendRecording()} mt={100} size="md" variant="subtle">
                         <Text>Transcribe</Text>
                     </Button>
 

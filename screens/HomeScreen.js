@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
-import { HStack, VStack, Alert } from "native-base";
+import { HStack, VStack, Alert, useToast } from "native-base";
 
 import AudioFile from "../components/AudioFile";
 import AudioModal from "../components/AudioModal";
@@ -17,12 +17,15 @@ function HomeScreen() {
     const [playFile, setFile] = useState('')
     const [whisperModal, setWhisperModal] = useState(false)
     const [recordModal, setRecordModal] = useState(false)
+    const [serversDown, setServer] = useState(false)
+
+    const toast = useToast()
 
 
     async function record() {
         // console.log("NOW RECORDING")
         console.log("opening modal!")
-    
+
         setRecordModal(true)
 
         // try {
@@ -32,13 +35,13 @@ function HomeScreen() {
         //         allowsRecordingIOS: true,
         //         playsInSilentModeIOS: true,
         //     })
-    
+
         //     console.log("Alrighty Starting the recordings")
         //     const { recording }  = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY)
         //     setRecording(recording)
         //     console.log("recording has started")
         // }
-        
+
         // catch(e) {
         //     console.log("OOPIES, HOUSTON WE HAVE A PROBLEM")
         //     console.error(e);
@@ -55,23 +58,23 @@ function HomeScreen() {
 
         const uri = recording.getURI();
 
-        setRecording(haveRecordings+1);
+        setRecording(haveRecordings + 1);
         updateAudioFiles()
     }
 
     async function updateAudioFiles() {
         try {
-            const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory+"AV")
+            const files = await FileSystem.readDirectoryAsync(FileSystem.cacheDirectory + "AV")
 
             console.log(files)
             const filesObj = []
 
-            for(var i = 0; i < files.length; i++) {
+            for (var i = 0; i < files.length; i++) {
                 var obj = {}
 
                 obj["id"] = i
                 obj["filename"] = files[i].split(".")[0]
-                
+
                 filesObj.push(obj)
 
             }
@@ -80,15 +83,15 @@ function HomeScreen() {
             console.log(audioFiles)
         }
 
-        catch(err) {
+        catch (err) {
             console.log("Theres no recordings make one!")
         }
-        
+
     }
 
     async function fileSelect(file) {
         console.log("file is being selected!")
-        if(whisperModal) {
+        if (whisperModal) {
             setWhisperModal(false)
         }
         else {
@@ -100,10 +103,12 @@ function HomeScreen() {
     async function checkTranscribeServers() {
         console.log("Checking if server is up...")
         try {
+            console.log("pinging server to be sure!")
             const response = await axios({
                 method: 'get',
-                url: 'http://104.198.128.84:3000/testTranscriber',
-                timeout: 2000
+                url: 'http://104.198.128.84:3000/testTranscriber/',
+                // timeout: 5000,
+                responseType: 'json'
             })
 
             console.log(response.data)
@@ -111,9 +116,34 @@ function HomeScreen() {
             return response.data
         }
 
-        catch(err) {
+        catch (err) {
             console.log("Server not up, transcribing has been disabled.")
+            showConnectionToast()
         }
+    }
+
+    function showConnectionToast() {
+        toast.show({
+            render: () => {
+                return (
+                    <Alert w="100%" variant='subtle' Scheme="success" status="error">
+                        <VStack space={2} flexShrink={1} w="100%">
+                            <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                                <HStack space={2} flexShrink={1} alignItems="center">
+                                    <Alert.Icon />
+                                    <Text color='green'>
+                                        Servers are down, transcribing has been disabled.
+                                    </Text>
+                                </HStack>
+                            </HStack>
+                        </VStack>
+                    </Alert>
+                )
+            }
+        })
+
+        setServer(true)
+
     }
 
     useEffect(() => {
@@ -129,35 +159,21 @@ function HomeScreen() {
                     data={audioFiles}
                     renderItem={itemData => (
                         <AudioFile
-                            fileName={ itemData.item.filename }
-                            select={ (f) => fileSelect(f) }
+                            fileName={itemData.item.filename}
+                            select={(f) => fileSelect(f)}
                         />
                     )}
                 />
             </View>
             <View style={styles.buttonContainer}>
                 <View style={{ padding: 10 }}>
-                    <Pressable style={styles.recordBtn} onPress={() => record()}>
-                        <Text style={{ fontWeight: "bold", color:'white' }}>Record</Text>
+                    <Pressable style={styles.recordBtn} onPress={() => checkTranscribeServers()}>
+                        <Text style={{ fontWeight: "bold", color: 'white' }}>Record</Text>
                     </Pressable>
                 </View>
             </View>
-            <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
+            <AudioModal serverStatus={serversDown} fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
             <RecordModal isVisible={recordModal} modalCancel={() => setRecordModal(false)} />
-
-            
-            <Alert w="100%" Scheme="success" status="success">
-                <VStack space={2} flexShrink={1} w="100%">
-                  <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
-                    <HStack space={2} flexShrink={1} alignItems="center">
-                      <Alert.Icon />
-                      <Text color='green'>
-                        Selection successfully moved!
-                      </Text>
-                    </HStack>
-                  </HStack>
-                </VStack>
-            </Alert>
 
 
         </View>
@@ -169,7 +185,7 @@ function HomeScreen() {
 const styles = StyleSheet.create({
     container: {
         alignContent: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         alignItems: 'center',
         // padding: 10
     },
@@ -186,7 +202,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'red',
         alignItems: 'center',
-        justifyContent: 'center',   
+        justifyContent: 'center',
         paddingVertical: 2,
         // paddingHorizontal: 1,
         width: 80,
