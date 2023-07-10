@@ -9,8 +9,6 @@ import Card from "./Card"
 
 const RecordModal = props => {
 
-    // const [fadeAnim, setFadeAnim] = useState(false);
-
     const fadeAnim = useRef(new Animated.Value(0)).current
     const [recording, setRecording] = useState(false)
 

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Pressable, StyleSheet, FlatList } from "react-native"
 import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
+import { HStack, VStack, Alert } from "native-base";
+
 import AudioFile from "../components/AudioFile";
 import AudioModal from "../components/AudioModal";
 import RecordModal from "../components/RecordModal";
@@ -95,8 +97,28 @@ function HomeScreen() {
         }
     }
 
+    async function checkTranscribeServers() {
+        console.log("Checking if server is up...")
+        try {
+            const response = await axios({
+                method: 'get',
+                url: 'http://104.198.128.84:3000/testTranscriber',
+                timeout: 2000
+            })
+
+            console.log(response.data)
+            setTranscribe(response.data['Result'])
+            return response.data
+        }
+
+        catch(err) {
+            console.log("Server not up, transcribing has been disabled.")
+        }
+    }
+
     useEffect(() => {
         updateAudioFiles()
+        checkTranscribeServers()
     }, [])
 
     return (
@@ -122,6 +144,22 @@ function HomeScreen() {
             </View>
             <AudioModal fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
             <RecordModal isVisible={recordModal} modalCancel={() => setRecordModal(false)} />
+
+            
+            <Alert w="100%" Scheme="success" status="success">
+                <VStack space={2} flexShrink={1} w="100%">
+                  <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                    <HStack space={2} flexShrink={1} alignItems="center">
+                      <Alert.Icon />
+                      <Text color='green'>
+                        Selection successfully moved!
+                      </Text>
+                    </HStack>
+                  </HStack>
+                </VStack>
+            </Alert>
+
+
         </View>
     )
 }

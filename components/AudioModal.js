@@ -5,16 +5,16 @@ import { Audio } from 'expo-av'
 import * as FileSystem from 'expo-file-system';
 import axios from "axios";
 
-import { Button, VStack } from "native-base";
+import { Button, VStack, Box } from "native-base";
 
 const AudioModal = props => {
 
-    const [transcribedText, setTranscribe] = useState('')
+    const [transcribedText, setTranscribe] = useState('Transcribed Text will be shown here')
     const [fileURI, setURI] = useState('')
     const [loadSound, setSound] = useState('')
 
     function cancelModal() {
-        setTranscribe('')
+        setTranscribe('Transcribed Text will be shown here')
         props.modalCancel()
 
     }
@@ -91,11 +91,13 @@ const AudioModal = props => {
     if(props.isVisible) {
         return ( 
             <Modal onShow={() => loadURI()} onRequestClose={() => cancelModal()} isVisible={props.isVisible} animationType="slide">
-                <VStack space={4} alignItems="center" onPress={() => sendRecording()}>
-                    <Text fontSize="lg">
-                        { props.fileName }
-                    </Text>
-                    <Button mt={100} size="md" variant="subtle">
+                <VStack space={4} alignItems="center">
+                    <Box mt={70}>
+                        <Text fontSize="lg">
+                            { props.fileName }
+                        </Text>
+                    </Box>
+                    <Button onPress={() => sendRecording()} mt={100} size="md" variant="subtle">
                         <Text>Transcribe</Text>
                     </Button>
 
@@ -107,13 +109,17 @@ const AudioModal = props => {
                         <Text>Back</Text>
                     </Button>
                 </VStack>
+                <Box mt={100} alignItems="left" paddingLeft={10}>
+                    <Text>
+                        { transcribedText }
+                    </Text>
+                </Box>
             </Modal>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
 })
 
 export default AudioModal;
