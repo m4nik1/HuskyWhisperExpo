@@ -131,7 +131,7 @@ function HomeScreen() {
                             <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
                                 <HStack space={2} flexShrink={1} alignItems="center">
                                     <Alert.Icon />
-                                    <Text color='green'>
+                                    <Text color='red'>
                                         Servers are down, transcribing has been disabled.
                                     </Text>
                                 </HStack>
@@ -167,13 +167,13 @@ function HomeScreen() {
             </View>
             <View style={styles.buttonContainer}>
                 <View style={{ padding: 10 }}>
-                    <Pressable style={styles.recordBtn} onPress={() => checkTranscribeServers()}>
+                    <Pressable style={styles.recordBtn} onPress={() => record()}>
                         <Text style={{ fontWeight: "bold", color: 'white' }}>Record</Text>
                     </Pressable>
                 </View>
             </View>
             <AudioModal serverStatus={serversDown} fileName={playFile} isVisible={whisperModal} modalCancel={() => setWhisperModal(false)} />
-            <RecordModal isVisible={recordModal} modalCancel={() => setRecordModal(false)} />
+            <RecordModal update={() => updateAudioFiles()} isVisible={recordModal} modalCancel={() => setRecordModal(false)} />
 
 
         </View>

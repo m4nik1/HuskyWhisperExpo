@@ -53,6 +53,7 @@ const RecordModal = props => {
             allowsRecordingIOS: false
         })
         setRecording(null)
+        props.update()
         Animated.timing(fadeAnim).stop()
     }
 
