@@ -34,6 +34,7 @@ const AudioModal = props => {
 
         console.log("Trying to send file now")
         try {
+            showRecordingSent()
             const response = await axios({
                 method: 'post',
                 url: 'http://104.198.128.84:3000/uploadLectureRecording',
@@ -43,8 +44,10 @@ const AudioModal = props => {
                 },
             })
 
+
             console.log(response.data)
             setTranscribe(response.data['Result'])
+            showRecordingTranscribed()
             return response.data
         }
 
@@ -70,6 +73,49 @@ const AudioModal = props => {
         else {
             console.log("No recording is selected please select a recording to play one")
         }   
+    }
+
+
+    function showRecordingSent() {
+        toast.show({
+            render: () => {
+                return (
+                    <Alert w="100%" variant='subtle' Scheme="success" status="error">
+                        <VStack space={2} flexShrink={1} w="100%">
+                            <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                                <HStack space={2} flexShrink={1} alignItems="center">
+                                    <Alert.Icon />
+                                    <Text color='red'>
+                                        Transcribing has been sent, you will be notified when its transcribed.
+                                    </Text>
+                                </HStack>
+                            </HStack>
+                        </VStack>
+                    </Alert>
+                )
+            }
+        })
+    }
+
+    function showRecordingTranscribed() {
+        toast.show({
+            render: () => {
+                return (
+                    <Alert w="100%" variant='subtle' Scheme="success" status="success">
+                        <VStack space={2} flexShrink={1} w="100%">
+                            <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
+                                <HStack space={2} flexShrink={1} alignItems="center">
+                                    <Alert.Icon />
+                                    <Text color='green'>
+                                        Recording has been transcribed!
+                                    </Text>
+                                </HStack>
+                            </HStack>
+                        </VStack>
+                    </Alert>
+                )
+            }
+        })
     }
 
     

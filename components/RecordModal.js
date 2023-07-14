@@ -84,7 +84,7 @@ const RecordModal = props => {
                 <Card style={styles.cardView}>
 
                     <Text fontSize={20}>
-                        This is the Record Modal.
+                        Click the button below to start your recording
                     </Text>
 
                     <Animated.View style={[styles.blinkLight, { opacity: fadeAnim },]}>
