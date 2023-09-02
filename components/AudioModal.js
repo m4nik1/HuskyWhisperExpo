@@ -16,7 +16,6 @@ const AudioModal = props => {
     function cancelModal() {
         setTranscribe('Transcribed Text will be shown here')
         props.modalCancel()
-
     }
     
 
