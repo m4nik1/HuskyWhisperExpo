@@ -12,4 +12,6 @@ HuskyWhisper is a mobile application designed to transcribe and summarize lectur
 
 - **Frontend**: React Native with TypeScript
 - **Backend**: Python FastAPI for transcribing
+- **AI Model**: Open source English Speech Recognition Model called Whisper
 - **API**: RESTful API with Express.js for load balancing.
+- **Cloud**: AWS/GCloud for handling voice transcription requests
