@@ -1,6 +1,6 @@
 # HuskyWhisper
 
-HuskyWhisper is a mobile application designed to transcribe and summarize lecture audio efficiently. Built using modern technologies, it leverages AI to process and summarize voice recordings, making it an essential tool for students and professionals alike.
+HuskyWhisper is a mobile application designed to transcribe and summarize lecture audio efficiently. Built using modern technologies, it leverages AI to process and summarize voice recordings, making it an essential tool for students and professionals alike. Summarizes lectures and meetings in 7 bullet points.
 
 ## Features
 
