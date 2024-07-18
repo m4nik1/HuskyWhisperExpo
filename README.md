@@ -8,6 +8,13 @@ HuskyWhisper is a mobile application designed to transcribe and summarize lectur
 - **Audio Summarization**: Summarizes the transcribed text to 5-7 bullet points.
 - **Optimized Audio Transfer**: Efficiently transfers audio files to the backend using nodejs.
 
+## How to run
+### IMPORTANT: This is assuming nodejs/npm is setup in your current enviroment
+1. Clone this repository and run ```npm install``` inside this repo folder
+2. Download the expo application on your mobile phone (Search on app store or google play)
+3. Run this frontend application in terminal on PC/laptop via ```npm start```
+4. Scan Expo QR code and try it out!
+
 ## Tech Stack
 
 - **Frontend**: React Native with TypeScript
